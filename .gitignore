@@ -12,3 +12,4 @@ buildNumber.properties
 .project
 jsonParser.iml
 .idea/
+*.json
