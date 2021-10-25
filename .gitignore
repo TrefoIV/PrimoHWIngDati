@@ -13,3 +13,4 @@ buildNumber.properties
 jsonParser.iml
 .idea/
 *.json
+index/
