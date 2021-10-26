@@ -1,6 +1,7 @@
 package indexManager;
 
 import jsonParser.Cell;
+import jsonParser.CellCollection;
 import jsonParser.Table;
 import org.apache.lucene.codecs.simpletext.SimpleTextCodec;
 import org.apache.lucene.document.*;
@@ -43,36 +44,22 @@ public class IndexManager {
         HashMap<Integer, Document> col2docs = new HashMap<>();
         Document doc;
         int col;
-        for(Cell cell : table.getCells().getCells()){
-            if(cell.getHeader()) continue;
-            if(cell.isNULLValue()) continue;
 
-            col = cell.getCoordinates().getColumn();
-
-            if(col2docs.containsKey(col)){
-                doc = col2docs.get(col);
+        for(CellCollection column : table.getColumns().values()){
+            doc = new Document();
+            doc.add(new StoredField(IndexManager.TABLE_ID_FIELD_TYPE, table.getId()));
+            for(Cell cell : column.getCells()){
                 doc.add(new StringField(IndexManager.ELEMENT_FIELD_TYPE, cell.getCleanedText(), Field.Store.YES));
             }
-            else{
-                doc = new Document();
-                doc.add(new StoredField(IndexManager.TABLE_ID_FIELD_TYPE, table.getId()));
-                doc.add(new StringField(IndexManager.ELEMENT_FIELD_TYPE, cell.getCleanedText(), Field.Store.YES));
-                col2docs.put(col, doc);
+            try {
+                this.writer.addDocument(doc);
+                if(this.addedTableCount == this.MAX_TABLES_NUMBER_PER_COMMIT){
+                    writer.commit();
+                    this.addedTableCount = 0;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }
-        try {
-            for(Document d : col2docs.values()){
-                writer.addDocument(d);
-
-            }
-
-           if(this.addedTableCount == this.MAX_TABLES_NUMBER_PER_COMMIT){
-                writer.commit();
-                this.addedTableCount = 0;
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
 
