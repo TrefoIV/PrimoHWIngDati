@@ -81,7 +81,7 @@ public class prova {
 				}
 			}
 			statistiche.calcoloNumeriMedi();
-//			indexManager.closeManager();
+			indexManager.closeManager();
 			LocalTime end = LocalTime.now();
 			System.out.println(start);
 			System.out.println(end);
