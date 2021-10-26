@@ -1,4 +1,4 @@
-package indexManager;
+package indexManagment;
 
 
 import jsonParser.Cell;
@@ -26,19 +26,11 @@ public class MergeListImpl {
         this.column = column.getCells();
     }
 
-    public  Collection<Integer> executeQuery(){
+    public  Collection<Integer> executeQuery(IndexReader reader){
 
         if(column == null || column.isEmpty())
             return new ArrayList<>();
-        IndexReader reader;
-        try {
-            Path path = Paths.get("index");
-            Directory dir = FSDirectory.open(path);
-            reader = DirectoryReader.open(dir);
-        }catch (IOException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+
 
         IndexSearcher searcher = new IndexSearcher(reader);
         Term term = new Term(IndexManager.ELEMENT_FIELD_TYPE, this.column.remove(0).getCleanedText());

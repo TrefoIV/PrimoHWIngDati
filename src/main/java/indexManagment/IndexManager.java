@@ -1,9 +1,8 @@
-package indexManager;
+package indexManagment;
 
 import jsonParser.Cell;
 import jsonParser.CellCollection;
 import jsonParser.Table;
-import org.apache.lucene.codecs.simpletext.SimpleTextCodec;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
