@@ -10,7 +10,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonSetter;
 
-@JsonIgnoreProperties({ "_id", "className", "beginIndex", "cells", "endIndex", "referenceContext", "type", "classe", "headersCleaned", "keyColumn" })
+@JsonIgnoreProperties({ "id", "className", "beginIndex", "cells", "endIndex", "referenceContext", "type", "classe", "headersCleaned", "keyColumn" })
 
 /*
  * Table represents a table of the json file
@@ -22,7 +22,7 @@ public class Table {
 	private String id;
 
 	@JsonCreator
-	public Table(@JsonProperty("maxDimensions") MaxDimensions maxDimensions, @JsonProperty("id") String id) {
+	public Table(@JsonProperty("maxDimensions") MaxDimensions maxDimensions, @JsonProperty("_id") String id) {
 		this.maxDimensions = maxDimensions;
 		this.id = id;
 	}
@@ -60,7 +60,7 @@ public class Table {
 		return id;
 	}
 
-	@JsonSetter("id")
+	@JsonSetter("_id")
 	public void setId(String id) {
 		this.id = id;
 	}
