@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -25,7 +26,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
 //Queta è una classe inutile di prova
 public class IndexerMain {
 	@SuppressWarnings("unchecked")
@@ -36,6 +36,7 @@ public class IndexerMain {
 		IndexManager indexManager = new IndexManager();
 		Stats statistiche = new Stats();
 		Table table;
+		File queryJson = new File("queryJson.json");
 
 		try {
 
@@ -48,70 +49,43 @@ public class IndexerMain {
 			ObjectMapper objectMapper = new ObjectMapper();
 
 			int numeroTabelle = 0;
-			
+			int numeroTabTemp = 0;
 
-			LocalTime start = LocalTime.now();
+			FileWriter myWriter = new FileWriter(queryJson);
+
 			// keep reading the file line by line until is null
-			while ((sCurrentLine = br.readLine()) != null && numeroTabelle<5) {
-				//System.out.println("Record:\t" + sCurrentLine);
+			while ((sCurrentLine = br.readLine()) != null && numeroTabTemp < 10) {
+				// System.out.println("Record:\t" + sCurrentLine);
 
 				numeroTabelle++;
-				// this object will contain the current line of the file
-				Object obj;
-				try {
-					
-					// parser
-					obj = parser.parse(sCurrentLine);
+				numeroTabTemp++;
+				table = objectMapper.readValue(sCurrentLine, Table.class);
+				// saving cells from current table to a collection
+				CellCollection cells = objectMapper.readValue(sCurrentLine, new TypeReference<CellCollection>() {
+				});
 
-					// current table
-					table = objectMapper.readValue(sCurrentLine, Table.class);
-					// saving cells from current table to a collection
-					CellCollection cells = objectMapper.readValue(sCurrentLine, new TypeReference<CellCollection>() {
-					});
+				table.setCells(cells);
+				if (numeroTabelle == 4) {
 
-					table.setCells(cells);
-					indexManager.addTable(table);
+					numeroTabelle = 0;
 
-					
-					statistiche.analizza(table);
+					myWriter.append(sCurrentLine);
+					myWriter.append("\n");
 
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+				indexManager.addTable(table);
+
+				statistiche.analizza(table);
+
 			}
 			statistiche.calcoloNumeriMedi();
 			indexManager.closeManager();
-			LocalTime end = LocalTime.now();
-			System.out.println(start);
-			System.out.println(end);
-			System.out.println(statistiche.toString());
 
-			
-			/*
-			 * System.out.println("numero totale righe: " + numeroMedioRighe);
-			 * System.out.println("numero medio righe: " +
-			 * (int)(numeroMedioRighe/numeroTabelle));
-			 * 
-			 * System.out.println("numero totale colonne: " + numeroMedieColonne);
-			 * System.out.println("numero medio colonne: " +
-			 * (int)(numeroMedieColonne/numeroTabelle));
-			 */
-			//System.out.println(numeroTabelle);
-
-			/*
-			 * for (Table tab : tableCollection.getTables()) {
-			 * System.out.println(tab.getId());
-			 * System.out.println(tab.getMaxDimensions().getRow());
-			 * System.out.println(tab.getMaxDimensions().getColumn());
-			 * 
-			 * }
-			 */
-			
-
-		} catch (IOException e) {
-			e.printStackTrace();
+			myWriter.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		} finally {
+
 			try {
 				if (br != null)
 					br.close();
