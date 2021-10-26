@@ -64,7 +64,7 @@ public class IndexerMain {
 				CellCollection cells = objectMapper.readValue(sCurrentLine, new TypeReference<CellCollection>() {
 				});
 
-				table.setCells(cells);
+				table.setColumns(cells);
 				if (numeroTabelle == 4) {
 
 					numeroTabelle = 0;

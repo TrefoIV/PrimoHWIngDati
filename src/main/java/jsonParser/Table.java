@@ -1,6 +1,9 @@
 package jsonParser;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -15,7 +18,7 @@ import org.codehaus.jackson.annotate.JsonSetter;
 
 public class Table {
 	private MaxDimensions maxDimensions;
-	private CellCollection cells;
+	private Map<Integer, CellCollection> columns;
 	private String id;
 
 	@JsonCreator
@@ -33,14 +36,24 @@ public class Table {
 	public void setMaxDimensions(MaxDimensions maxDimensions) {
 		this.maxDimensions = maxDimensions;
 	}
-
-	public CellCollection getCells() {
-		return cells;
+	
+	public void setColumns(CellCollection cells) {
+		Map<Integer, CellCollection> columns = new TreeMap<>();
+		for(Cell cell : cells.getCells()) {
+			int columnTemp = cell.getCoordinates().getColumn();
+			if(columns.containsKey(columnTemp)) {
+				columns.get(columnTemp).getCells().add(cell);
+			}
+			else {
+				CellCollection column = new CellCollection();
+				column.getCells().add(cell);
+				columns.put(columnTemp, column);
+			}
+		}
 	}
-
-	@JsonSetter("cells")
-	public void setCells(CellCollection cells) {
-		this.cells = cells;
+	
+	public Map<Integer, CellCollection> getColumns(){
+		return this.columns;
 	}
 
 	public String getId() {
@@ -51,6 +64,7 @@ public class Table {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
 	
 	
 
