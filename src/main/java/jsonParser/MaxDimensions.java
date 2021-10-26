@@ -13,30 +13,30 @@ import org.codehaus.jackson.annotate.JsonSetter;
  */
 
 public class MaxDimensions {
-	private String row;
-	private String column;
+	private int row;
+	private int column;
 
 	@JsonCreator
-	public MaxDimensions(@JsonProperty("row") String row, @JsonProperty("column") String column) {
+	public MaxDimensions(@JsonProperty("row") int row, @JsonProperty("column") int column) {
 		this.row = row;
 		this.column = column;
 	}
 
-	public String getRow() {
+	public int getRow() {
 		return row;
 	}
 
 	@JsonSetter("row")
-	public void setRow(String row) {
+	public void setRow(int row) {
 		this.row = row;
 	}
 
-	public String getColumn() {
+	public int getColumn() {
 		return column;
 	}
 
 	@JsonSetter("column")
-	public void setColumn(String column) {
+	public void setColumn(int column) {
 		this.column = column;
 	}
 }

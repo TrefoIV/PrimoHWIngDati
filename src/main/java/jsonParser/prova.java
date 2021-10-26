@@ -10,6 +10,8 @@ import java.time.LocalTime;
 import java.util.*;
 
 import indexManager.IndexManager;
+import stats.Stats;
+
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
@@ -21,6 +23,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+
+//Queta è una classe inutile di prova
 public class prova {
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws Exception {
@@ -28,6 +32,8 @@ public class prova {
 		BufferedReader br = null;
 		JSONParser parser = new JSONParser();
 		IndexManager indexManager = new IndexManager();
+		Stats statistiche = new Stats();
+		Table table;
 
 		try {
 
@@ -57,7 +63,7 @@ public class prova {
 					obj = parser.parse(sCurrentLine);
 
 					// current table
-					Table table = objectMapper.readValue(sCurrentLine, Table.class);
+					table = objectMapper.readValue(sCurrentLine, Table.class);
 					// saving cells from current table to a collection
 					CellCollection cells = objectMapper.readValue(sCurrentLine, new TypeReference<CellCollection>() {
 					});
@@ -81,12 +87,14 @@ public class prova {
 					 * System.out.println(cel.getCoordinates().getRow());
 					 * System.out.println(cel.getCleanedText()); }
 					 */
+					statistiche.analizza(table);
 
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
+			statistiche.calcoloNumeriMedi();
 //			indexManager.closeManager();
 			LocalTime end = LocalTime.now();
 			System.out.println(start);

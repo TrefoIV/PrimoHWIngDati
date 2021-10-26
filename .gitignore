@@ -14,3 +14,4 @@ jsonParser.iml
 .idea/
 *.json
 index/
+.classpath
