@@ -93,7 +93,7 @@ public class MergeListImpl {
         }
         @Override
         public int compare(Integer doc1, Integer doc2) {
-            return Integer.compare(this.docs2count.get(doc1), this.docs2count.get(doc2));
+            return Integer.compare(this.docs2count.get(doc2), this.docs2count.get(doc1));
         }
     }
 }
