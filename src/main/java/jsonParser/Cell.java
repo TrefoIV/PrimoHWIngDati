@@ -23,7 +23,7 @@ public class Cell {
 			@JsonProperty("cleanedText") String cleanedText, @JsonProperty("isHeader") Boolean isHeader) {
 		this.type = type;
 		this.coordinates = coordinates;
-		this.cleanedText = cleanedText;
+		this.cleanedText = cleanedText.toLowerCase();
 		this.isHeader = isHeader;
 	}
 
