@@ -27,7 +27,7 @@ import org.json.simple.parser.ParseException;
 
 
 //Queta è una classe inutile di prova
-public class prova {
+public class IndexerMain {
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws Exception {
 
