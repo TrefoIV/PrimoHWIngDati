@@ -2,6 +2,7 @@ package indexManager;
 
 import jsonParser.Cell;
 import jsonParser.Table;
+import org.apache.lucene.codecs.simpletext.SimpleTextCodec;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -15,6 +16,8 @@ import java.util.HashMap;
 
 public class IndexManager {
 
+    public static final String ELEMENT_FIELD_TYPE = "element";
+    public static final String TABLE_ID_FIELD_TYPE = "table";
     private static final int MAX_TABLES_NUMBER_PER_COMMIT = 10000;
     private IndexWriter writer;
     private int addedTableCount;
@@ -26,7 +29,7 @@ public class IndexManager {
         try {
             Directory dir = FSDirectory.open(path);
             IndexWriterConfig config = new IndexWriterConfig();
-//            config.setCodec(new SimpleTextCodec());
+            config.setCodec(new SimpleTextCodec());
             this.writer = new IndexWriter(dir, config);
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,12 +48,12 @@ public class IndexManager {
 
             if(col2docs.containsKey(col)){
                 doc = col2docs.get(col);
-                doc.add(new StringField("el", cell.getCleanedText(), Field.Store.YES));
+                doc.add(new StringField(IndexManager.ELEMENT_FIELD_TYPE, cell.getCleanedText(), Field.Store.YES));
             }
             else{
                 doc = new Document();
-                doc.add(new StoredField("table", table.getId()));
-                doc.add(new StringField("el", cell.getCleanedText(), Field.Store.YES));
+                doc.add(new StoredField(IndexManager.TABLE_ID_FIELD_TYPE, table.getId()));
+                doc.add(new StringField(IndexManager.ELEMENT_FIELD_TYPE, cell.getCleanedText(), Field.Store.YES));
                 col2docs.put(col, doc);
             }
         }
