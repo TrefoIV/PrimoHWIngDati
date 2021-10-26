@@ -60,7 +60,6 @@ public class IndexerMain {
 
 					myWriter.append(sCurrentLine);
 					myWriter.append("\n");
-					continue;
 
 				}else {
 					indexManager.addTable(table);
