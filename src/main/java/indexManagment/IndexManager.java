@@ -48,6 +48,7 @@ public class IndexManager {
             doc = new Document();
             doc.add(new StoredField(IndexManager.TABLE_ID_FIELD_TYPE, table.getId()));
             for(Cell cell : column.getCells()){
+                if(cell.isNULLValue() || cell.getHeader()) continue;
                 doc.add(new StringField(IndexManager.ELEMENT_FIELD_TYPE, cell.getCleanedText(), Field.Store.YES));
             }
             try {
