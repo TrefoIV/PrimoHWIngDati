@@ -58,7 +58,7 @@ public class Stats {
 
 	public void valoriNulliPerTabella(List<Cell> cells) {
 		for (Cell cell : cells) {
-			if (cell.getType().equals("EMPTY"))
+			if (cell.isNULLValue())
 				this.numeroTotaleValoriNulli++;
 		}
 	}

@@ -54,7 +54,7 @@ public class IndexerMain {
 			FileWriter myWriter = new FileWriter(queryJson);
 
 			// keep reading the file line by line until is null
-			while ((sCurrentLine = br.readLine()) != null && numeroTabTemp < 10) {
+			while ((sCurrentLine = br.readLine()) != null && numeroTabTemp < 50000) {
 				// System.out.println("Record:\t" + sCurrentLine);
 
 				numeroTabelle++;
@@ -64,8 +64,8 @@ public class IndexerMain {
 				CellCollection cells = objectMapper.readValue(sCurrentLine, new TypeReference<CellCollection>() {
 				});
 
-				table.setColumns(cells);
-				if (numeroTabelle == 4) {
+				table.setCells(cells);
+				if (numeroTabelle == 20000) {
 
 					numeroTabelle = 0;
 

@@ -6,7 +6,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonSetter;
 
 @JsonIgnoreProperties({ "_id", "id", "className", "innerHTML", "Rows", "beginIndex", "endIndex", "referenceContext",
-		"classe", "maxDimensions", "headersCleaned", "keyColumn" })
+		"classe", "maxDimensions", "headersCleaned", "keyColumn", "type" })
 
 /*
  * Cell represents a cell of a table
@@ -14,26 +14,17 @@ import org.codehaus.jackson.annotate.JsonSetter;
 
 public class Cell {
 	private Boolean isHeader;
-	private String type;
 	private Coordinates coordinates;
 	private String cleanedText;
+	private boolean isNULLValue;
 
 	@JsonCreator
-	public Cell(@JsonProperty("type") String type, @JsonProperty("Coordinates") Coordinates coordinates,
+	public Cell( @JsonProperty("Coordinates") Coordinates coordinates,
 			@JsonProperty("cleanedText") String cleanedText, @JsonProperty("isHeader") Boolean isHeader) {
-		this.type = type;
 		this.coordinates = coordinates;
 		this.cleanedText = cleanedText.toLowerCase();
 		this.isHeader = isHeader;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	@JsonSetter("type")
-	public void setType(String type) {
-		this.type = type;
+		this.isNULLValue = this.cleanedText == "";
 	}
 
 	public Coordinates getCoordinates() {
@@ -63,4 +54,7 @@ public class Cell {
 		this.isHeader = isHeader;
 	}
 
+	public boolean isNULLValue() {
+		return this.isNULLValue;
+	}
 }

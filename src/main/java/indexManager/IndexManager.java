@@ -29,7 +29,7 @@ public class IndexManager {
         try {
             Directory dir = FSDirectory.open(path);
             IndexWriterConfig config = new IndexWriterConfig();
-            config.setCodec(new SimpleTextCodec());
+//            config.setCodec(new SimpleTextCodec());
             this.writer = new IndexWriter(dir, config);
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,6 +44,9 @@ public class IndexManager {
         Document doc;
         int col;
         for(Cell cell : table.getCells().getCells()){
+            if(cell.getHeader()) continue;
+            if(cell.isNULLValue()) continue;
+
             col = cell.getCoordinates().getColumn();
 
             if(col2docs.containsKey(col)){
