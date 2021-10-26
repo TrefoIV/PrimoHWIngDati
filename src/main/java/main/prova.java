@@ -1,4 +1,4 @@
-package jsonParser;
+package main;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,6 +10,8 @@ import java.time.LocalTime;
 import java.util.*;
 
 import indexManager.IndexManager;
+import jsonParser.CellCollection;
+import jsonParser.Table;
 import stats.Stats;
 
 import org.codehaus.jackson.JsonFactory;
@@ -47,11 +49,10 @@ public class prova {
 
 			int numeroTabelle = 0;
 			
-			int numeroMedioRighe = 0;
-			int numeroMedieColonne = 0;
+
 			LocalTime start = LocalTime.now();
 			// keep reading the file line by line until is null
-			while ((sCurrentLine = br.readLine()) != null && numeroTabelle<10000) {
+			while ((sCurrentLine = br.readLine()) != null && numeroTabelle<5) {
 				//System.out.println("Record:\t" + sCurrentLine);
 
 				numeroTabelle++;
@@ -72,21 +73,6 @@ public class prova {
 					indexManager.addTable(table);
 
 					
-					//numeroMedieColonne += Integer.parseInt(table.getMaxDimensions().getColumn());
-					
-					//numeroMedioRighe += Integer.parseInt(table.getMaxDimensions().getRow());
-
-
-					/*
-					 * System.out.println(table.getId());
-					 * System.out.println(table.getMaxDimensions().getRow());
-					 * System.out.println(table.getMaxDimensions().getColumn());
-					 * 
-					 * for (Cell cel : table.getCells().getCells()) {
-					 * System.out.println(cel.getCoordinates().getColumn());
-					 * System.out.println(cel.getCoordinates().getRow());
-					 * System.out.println(cel.getCleanedText()); }
-					 */
 					statistiche.analizza(table);
 
 				} catch (ParseException e) {
@@ -99,6 +85,7 @@ public class prova {
 			LocalTime end = LocalTime.now();
 			System.out.println(start);
 			System.out.println(end);
+			System.out.println(statistiche.toString());
 
 			
 			/*
