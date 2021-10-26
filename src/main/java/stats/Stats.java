@@ -3,10 +3,12 @@ package stats;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import jsonParser.Cell;
+import jsonParser.CellCollection;
 import jsonParser.Table;
 
 public class Stats {
@@ -31,7 +33,7 @@ public class Stats {
 		this.numeroTabelle++;
 		this.numeroTotaleColonne += table.getMaxDimensions().getColumn();
 		this.numeroTotaleRighe += table.getMaxDimensions().getRow();
-		this.valoriNulliPerTabella(table.getCells().getCells());
+		this.valoriNulliPerTabella(table.getColumns());
 		int numeroColonneTabellaCorrente = table.getMaxDimensions().getColumn();
 		if (this.distribuzioneColonne.containsKey(numeroColonneTabellaCorrente)) {
 			int tempColonne = this.distribuzioneColonne.get(numeroColonneTabellaCorrente);
@@ -46,7 +48,7 @@ public class Stats {
 			this.distribuzioneRighe.put(numeroRigheTabellaCorrente, tempRighe);
 		} else
 			this.distribuzioneRighe.put(numeroRigheTabellaCorrente, 1);
-		this.distribuzioneValori(table.getCells().getCells());
+		this.distribuzioneValori(table.getColumns());
 
 	}
 
@@ -56,24 +58,28 @@ public class Stats {
 		this.numeroMedioValoriNulli = this.numeroTotaleValoriNulli / this.numeroTabelle;
 	}
 
-	public void valoriNulliPerTabella(List<Cell> cells) {
-		for (Cell cell : cells) {
-			if (cell.isNULLValue())
-				this.numeroTotaleValoriNulli++;
+	public void valoriNulliPerTabella(Map<Integer, CellCollection> columns) {
+		for (int i : columns.keySet()) {
+			for (Cell cell : columns.get(i).getCells()) {
+				if (cell.isNULLValue())
+					this.numeroTotaleValoriNulli++;
+			}
 		}
 	}
 
-	public void distribuzioneValori(List<Cell> cells) {
+	public void distribuzioneValori(Map<Integer, CellCollection> columns) {
 		HashMap<Integer, Set<String>> valoriDistintiPerColonna = new HashMap<Integer, Set<String>>();
 		// popolo una mappa associando ad ogni colonna l'insieme dei termini distinti
-		for (Cell cell : cells) {
-			int mapKey = cell.getCoordinates().getColumn();
-			if (valoriDistintiPerColonna.containsKey(mapKey)) {
-				valoriDistintiPerColonna.get(mapKey).add(cell.getCleanedText());
-			} else {
-				Set<String> valoriDistinti = new HashSet<String>();
-				valoriDistinti.add(cell.getCleanedText());
-				valoriDistintiPerColonna.put(mapKey, valoriDistinti);
+		for (int i : columns.keySet()) {
+			for (Cell cell : columns.get(i).getCells()) {
+				int mapKey = cell.getCoordinates().getColumn();
+				if (valoriDistintiPerColonna.containsKey(mapKey)) {
+					valoriDistintiPerColonna.get(mapKey).add(cell.getCleanedText());
+				} else {
+					Set<String> valoriDistinti = new HashSet<String>();
+					valoriDistinti.add(cell.getCleanedText());
+					valoriDistintiPerColonna.put(mapKey, valoriDistinti);
+				}
 			}
 		}
 		// itero per la mappa e conto quante colonne hanno lo stesso numero di valori
