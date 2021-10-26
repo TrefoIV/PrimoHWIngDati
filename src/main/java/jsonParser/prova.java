@@ -5,12 +5,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.*;
 
+import indexManager.IndexManager;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
@@ -28,6 +27,7 @@ public class prova {
 
 		BufferedReader br = null;
 		JSONParser parser = new JSONParser();
+		IndexManager indexManager = new IndexManager();
 
 		try {
 
@@ -43,10 +43,10 @@ public class prova {
 			
 			int numeroMedioRighe = 0;
 			int numeroMedieColonne = 0;
-
+			LocalTime start = LocalTime.now();
 			// keep reading the file line by line until is null
-			while ((sCurrentLine = br.readLine()) != null && numeroTabelle<2) {
-				// System.out.println("Record:\t" + sCurrentLine);
+			while ((sCurrentLine = br.readLine()) != null && numeroTabelle<10000) {
+				//System.out.println("Record:\t" + sCurrentLine);
 
 				numeroTabelle++;
 				// this object will contain the current line of the file
@@ -63,7 +63,8 @@ public class prova {
 					});
 
 					table.setCells(cells);
-					
+					indexManager.addTable(table);
+
 					
 					//numeroMedieColonne += Integer.parseInt(table.getMaxDimensions().getColumn());
 					
@@ -86,6 +87,11 @@ public class prova {
 					e.printStackTrace();
 				}
 			}
+//			indexManager.closeManager();
+			LocalTime end = LocalTime.now();
+			System.out.println(start);
+			System.out.println(end);
+
 			
 			/*
 			 * System.out.println("numero totale righe: " + numeroMedioRighe);
