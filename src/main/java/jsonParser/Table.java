@@ -38,16 +38,16 @@ public class Table {
 	}
 	
 	public void setColumns(CellCollection cells) {
-		Map<Integer, CellCollection> columns = new TreeMap<>();
+		this.columns = new TreeMap<>();
 		for(Cell cell : cells.getCells()) {
 			int columnTemp = cell.getCoordinates().getColumn();
-			if(columns.containsKey(columnTemp)) {
-				columns.get(columnTemp).getCells().add(cell);
+			if(this.columns.containsKey(columnTemp)) {
+				this.columns.get(columnTemp).getCells().add(cell);
 			}
 			else {
 				CellCollection column = new CellCollection();
 				column.getCells().add(cell);
-				columns.put(columnTemp, column);
+				this.columns.put(columnTemp, column);
 			}
 		}
 	}

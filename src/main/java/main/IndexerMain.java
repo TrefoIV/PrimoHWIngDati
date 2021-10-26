@@ -60,11 +60,13 @@ public class IndexerMain {
 
 					myWriter.append(sCurrentLine);
 					myWriter.append("\n");
+					continue;
 
+				}else {
+					indexManager.addTable(table);
 				}
-				indexManager.addTable(table);
+					statistiche.analizza(table);
 
-				statistiche.analizza(table);
 
 			}
 			statistiche.calcoloNumeriMedi();

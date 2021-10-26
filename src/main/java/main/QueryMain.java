@@ -4,6 +4,7 @@ package main;
 
 import indexManagment.IndexManager;
 import indexManagment.QueryManager;
+import jsonParser.Cell;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexableField;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -39,6 +40,7 @@ public class QueryMain {
 
 				numeroTabTemp++;
 
+				System.out.println("============================================================================\n============================================================================");
 
 				// current table
 				table = objectMapper.readValue(sCurrentLine, Table.class);
@@ -47,6 +49,13 @@ public class QueryMain {
 				table.setColumns(cells);
 
 				for(CellCollection column : table.getColumns().values()){
+
+					System.out.println("############################################### Executing Query for Column : ###############################################");
+					System.out.print(table.getId() + ": ");
+					for(Cell c : column.getCells()){
+						System.out.print(c.getCleanedText() + "\t");
+					}
+					System.out.println("\n");
 					queryManager.setQueryColumn(column);
 
 					Collection<Integer> docs = queryManager.executeQuery();
@@ -54,7 +63,7 @@ public class QueryMain {
 					for(Integer docID : docs){
 						doc = queryManager.getDocumentById(docID);
 						IndexableField f = doc.getField(IndexManager.TABLE_ID_FIELD_TYPE);
-						System.out.print(f.name()  + ": ");
+						System.out.print(f.stringValue()  + ": ");
 
 						for(IndexableField field : doc.getFields(IndexManager.ELEMENT_FIELD_TYPE)){
 							System.out.print(field.stringValue() + "\t");
