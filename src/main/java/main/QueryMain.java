@@ -29,7 +29,7 @@ public class QueryMain {
 			String sCurrentLine;
 			int numeroTabTemp = 0;
 
-			br = new BufferedReader(new FileReader("tables.json"));
+			br = new BufferedReader(new FileReader("queryJson.json"));
 			ObjectMapper objectMapper = new ObjectMapper();
 
 			while ((sCurrentLine = br.readLine()) != null && numeroTabTemp < 2) {
@@ -44,7 +44,7 @@ public class QueryMain {
 				CellCollection cells = objectMapper.readValue(sCurrentLine, new TypeReference<CellCollection>() {
 				});
 
-				table.setCells(cells);
+				table.setColumns(cells);
 
 			}
 
