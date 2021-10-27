@@ -66,25 +66,28 @@ public class Stats {
 			this.distribuzioneColonne.put(numeroColonneTabellaCorrente, 1);
 
 		//metodo 1 per calcolare il numero delle righe
-		int numeroRigheTabellaCorrente = table.getColumns().get(table.getColumns().keySet().iterator().next()).getCells().size();
+		//int numeroRigheTabellaCorrente = table.getColumns().get(table.getColumns().keySet().iterator().next()).getCells().size();
 
-		//metodo 2 per calcolare il numero delle righe (itero ma non serve)
-		/*int numeroRigheTabellaCorrente = 0;
-
+		//metodo 2 per calcolare il numero delle righe - una tab potrebbe avere righe di lunghezza diversa data l'eliminazione dei campi empty
+		int numeroRigheTabellaCorrente = 0;
+		int maxNumeroRigheTabellaCorrente = 0;
 		for (Integer key : table.getColumns().keySet()) {
-			numeroRigheTabellaCorrente = table.getColumns().get(key).getCells().size(); 
-		}*/
+			numeroRigheTabellaCorrente = table.getColumns().get(key).getCells().size();
+			if(maxNumeroRigheTabellaCorrente < numeroRigheTabellaCorrente) {
+				maxNumeroRigheTabellaCorrente = numeroRigheTabellaCorrente;
+			}
+		}
 
-		if (this.distribuzioneRighe.containsKey(numeroRigheTabellaCorrente)) {
-			int tempRighe = this.distribuzioneRighe.get(numeroRigheTabellaCorrente);
+		if (this.distribuzioneRighe.containsKey(maxNumeroRigheTabellaCorrente)) {
+			int tempRighe = this.distribuzioneRighe.get(maxNumeroRigheTabellaCorrente);
 			tempRighe++;
-			this.distribuzioneRighe.put(numeroRigheTabellaCorrente, tempRighe);
+			this.distribuzioneRighe.put(maxNumeroRigheTabellaCorrente, tempRighe);
 		} else
-			this.distribuzioneRighe.put(numeroRigheTabellaCorrente, 1);
+			this.distribuzioneRighe.put(maxNumeroRigheTabellaCorrente, 1);
 		this.distribuzioneValori(table.getColumns());
 
 		this.numeroTotaleColonne += numeroColonneTabellaCorrente;
-		this.numeroTotaleRighe += numeroRigheTabellaCorrente;
+		this.numeroTotaleRighe += maxNumeroRigheTabellaCorrente;
 
 	}
 
