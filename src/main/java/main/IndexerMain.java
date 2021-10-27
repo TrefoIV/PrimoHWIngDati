@@ -54,7 +54,9 @@ public class IndexerMain {
 				});
 
 				table.setColumns(cells);
-				if (numeroTabelle == 20000) {
+				if (numeroTabelle == 50000) {
+					
+					System.out.println("Sono ancora vivo\n");
 
 					numeroTabelle = 0;
 
@@ -72,6 +74,10 @@ public class IndexerMain {
 			indexManager.closeManager();
 
 			myWriter.close();
+			
+			System.out.println(statistiche.toString());
+			System.out.println("Finito!\n");
+			
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} finally {

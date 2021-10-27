@@ -35,7 +35,7 @@ public class QueryMain {
 			br = new BufferedReader(new FileReader("queryJson.json"));
 			ObjectMapper objectMapper = new ObjectMapper();
 
-			while ((sCurrentLine = br.readLine()) != null && numeroTabTemp < 2) {
+			while ((sCurrentLine = br.readLine()) != null /*&& numeroTabTemp < 2*/) {
 				// System.out.println("Record:\t" + sCurrentLine);
 
 				numeroTabTemp++;
@@ -59,8 +59,14 @@ public class QueryMain {
 					queryManager.setQueryColumn(column);
 
 					Collection<Integer> docs = queryManager.executeQuery();
-
+					
+					int c = 0;
 					for(Integer docID : docs){
+						c++;
+						if(c == 5) {
+							c = 0;
+							break;
+						}
 						doc = queryManager.getDocumentById(docID);
 						IndexableField f = doc.getField(IndexManager.TABLE_ID_FIELD_TYPE);
 						System.out.print(f.stringValue()  + ": ");

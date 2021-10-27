@@ -29,19 +29,52 @@ public class Stats {
 		this.distribuzioneValoriDistinti = new TreeMap<Integer, Integer>();
 	}
 
+
 	public void analizza(Table table) {
+		/*
+		 * this.numeroTabelle++;
+		 * 
+		 * this.numeroTotaleColonne += table.getMaxDimensions().getColumn();
+		 * this.numeroTotaleRighe += table.getMaxDimensions().getRow();
+		 * this.valoriNulliPerTabella(table.getColumns());
+		 * 
+		 * int numeroColonneTabellaCorrente = table.getMaxDimensions().getColumn(); if
+		 * (this.distribuzioneColonne.containsKey(numeroColonneTabellaCorrente)) { int
+		 * tempColonne = this.distribuzioneColonne.get(numeroColonneTabellaCorrente);
+		 * tempColonne++; this.distribuzioneColonne.put(numeroColonneTabellaCorrente,
+		 * tempColonne); } else
+		 * this.distribuzioneColonne.put(numeroColonneTabellaCorrente, 1);
+		 * 
+		 * int numeroRigheTabellaCorrente = table.getMaxDimensions().getRow(); if
+		 * (this.distribuzioneRighe.containsKey(numeroRigheTabellaCorrente)) { int
+		 * tempRighe = this.distribuzioneRighe.get(numeroRigheTabellaCorrente);
+		 * tempRighe++; this.distribuzioneRighe.put(numeroRigheTabellaCorrente,
+		 * tempRighe); } else this.distribuzioneRighe.put(numeroRigheTabellaCorrente,
+		 * 1); this.distribuzioneValori(table.getColumns());
+		 */
+
 		this.numeroTabelle++;
-		this.numeroTotaleColonne += table.getMaxDimensions().getColumn();
-		this.numeroTotaleRighe += table.getMaxDimensions().getRow();
+
 		this.valoriNulliPerTabella(table.getColumns());
-		int numeroColonneTabellaCorrente = table.getMaxDimensions().getColumn();
+
+		int numeroColonneTabellaCorrente = table.getColumns().size();
 		if (this.distribuzioneColonne.containsKey(numeroColonneTabellaCorrente)) {
 			int tempColonne = this.distribuzioneColonne.get(numeroColonneTabellaCorrente);
 			tempColonne++;
 			this.distribuzioneColonne.put(numeroColonneTabellaCorrente, tempColonne);
 		} else
 			this.distribuzioneColonne.put(numeroColonneTabellaCorrente, 1);
-		int numeroRigheTabellaCorrente = table.getMaxDimensions().getRow();
+
+		//metodo 1 per calcolare il numero delle righe
+		int numeroRigheTabellaCorrente = table.getColumns().get(table.getColumns().keySet().iterator().next()).getCells().size();
+
+		//metodo 2 per calcolare il numero delle righe (itero ma non serve)
+		/*int numeroRigheTabellaCorrente = 0;
+
+		for (Integer key : table.getColumns().keySet()) {
+			numeroRigheTabellaCorrente = table.getColumns().get(key).getCells().size(); 
+		}*/
+
 		if (this.distribuzioneRighe.containsKey(numeroRigheTabellaCorrente)) {
 			int tempRighe = this.distribuzioneRighe.get(numeroRigheTabellaCorrente);
 			tempRighe++;
@@ -49,6 +82,9 @@ public class Stats {
 		} else
 			this.distribuzioneRighe.put(numeroRigheTabellaCorrente, 1);
 		this.distribuzioneValori(table.getColumns());
+
+		this.numeroTotaleColonne += numeroColonneTabellaCorrente;
+		this.numeroTotaleRighe += numeroRigheTabellaCorrente;
 
 	}
 
