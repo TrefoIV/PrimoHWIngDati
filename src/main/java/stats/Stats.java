@@ -65,10 +65,7 @@ public class Stats {
 		} else
 			this.distribuzioneColonne.put(numeroColonneTabellaCorrente, 1);
 
-		//metodo 1 per calcolare il numero delle righe
-		//int numeroRigheTabellaCorrente = table.getColumns().get(table.getColumns().keySet().iterator().next()).getCells().size();
-
-		//metodo 2 per calcolare il numero delle righe - una tab potrebbe avere righe di lunghezza diversa data l'eliminazione dei campi empty
+		//metodo per calcolare il numero delle righe - una tab potrebbe avere righe di lunghezza diversa data l'eliminazione dei campi empty
 		int numeroRigheTabellaCorrente = 0;
 		int maxNumeroRigheTabellaCorrente = 0;
 		for (Integer key : table.getColumns().keySet()) {
