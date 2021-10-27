@@ -1,6 +1,7 @@
 package jsonParser;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonCreator;
@@ -23,6 +24,10 @@ public class CellCollection implements Serializable {
 	@JsonCreator
 	public CellCollection(@JsonProperty("cells")List<Cell> cells) {
 		this.cells = cells;
+	}
+	
+	public CellCollection() {
+		this.cells = new ArrayList<>();
 	}
 
 	public List<Cell> getCells() {
