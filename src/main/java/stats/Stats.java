@@ -22,13 +22,18 @@ public class Stats {
 	private TreeMap<Integer, Integer> distribuzioneRighe;
 	private TreeMap<Integer, Integer> distribuzioneColonne;
 	private TreeMap<Integer, Integer> distribuzioneValoriDistinti;
+	private TreeMap<Integer, Integer> percentualeValoriNulliTabella;
+	// tiene conto del numero di valori nulli ogni volta che si vede una tabella
+	// (azzerata ad ogni iterazione)
+	private int valoriNulliPerTabella;
+	private int maxNumeroRigheTabellaCorrente;
 
 	public Stats() {
 		this.distribuzioneColonne = new TreeMap<Integer, Integer>();
 		this.distribuzioneRighe = new TreeMap<Integer, Integer>();
 		this.distribuzioneValoriDistinti = new TreeMap<Integer, Integer>();
+		this.percentualeValoriNulliTabella = new TreeMap<Integer, Integer>();
 	}
-
 
 	public void analizza(Table table) {
 		/*
@@ -65,12 +70,13 @@ public class Stats {
 		} else
 			this.distribuzioneColonne.put(numeroColonneTabellaCorrente, 1);
 
-		//metodo per calcolare il numero delle righe - una tab potrebbe avere righe di lunghezza diversa data l'eliminazione dei campi empty
+		// metodo per calcolare il numero delle righe - una tab potrebbe avere righe di
+		// lunghezza diversa data l'eliminazione dei campi empty
 		int numeroRigheTabellaCorrente = 0;
-		int maxNumeroRigheTabellaCorrente = 0;
+		this.maxNumeroRigheTabellaCorrente = 0;
 		for (Integer key : table.getColumns().keySet()) {
 			numeroRigheTabellaCorrente = table.getColumns().get(key).getCells().size();
-			if(maxNumeroRigheTabellaCorrente < numeroRigheTabellaCorrente) {
+			if (maxNumeroRigheTabellaCorrente < numeroRigheTabellaCorrente) {
 				maxNumeroRigheTabellaCorrente = numeroRigheTabellaCorrente;
 			}
 		}
@@ -85,6 +91,8 @@ public class Stats {
 
 		this.numeroTotaleColonne += numeroColonneTabellaCorrente;
 		this.numeroTotaleRighe += maxNumeroRigheTabellaCorrente;
+		this.percentualeValoriNulliTabella(table);
+		this.valoriNulliPerTabella = 0;
 
 	}
 
@@ -97,8 +105,10 @@ public class Stats {
 	public void valoriNulliPerTabella(Map<Integer, CellCollection> columns) {
 		for (int i : columns.keySet()) {
 			for (Cell cell : columns.get(i).getCells()) {
-				if (cell.isNULLValue())
+				if (cell.isNULLValue()) {
 					this.numeroTotaleValoriNulli++;
+					this.valoriNulliPerTabella++;
+				}
 			}
 		}
 	}
@@ -127,6 +137,20 @@ public class Stats {
 				this.distribuzioneValoriDistinti.put(set.size(), tempValoriDistinti);
 			} else
 				this.distribuzioneValoriDistinti.put(set.size(), 1);
+		}
+	}
+
+	public void percentualeValoriNulliTabella(Table table) {
+		double valNull = (double) this.valoriNulliPerTabella;
+		double cellTot = (double) (table.getColumns().size() * this.maxNumeroRigheTabellaCorrente);
+		int tempPerc = (int) ((valNull / cellTot)* 100);
+		//System.out.println(tempPerc);
+		if (this.percentualeValoriNulliTabella.get(tempPerc) == null) {
+			this.percentualeValoriNulliTabella.put(tempPerc, 1);
+		} else {
+			int tempNtab = this.percentualeValoriNulliTabella.get(tempPerc);
+			tempNtab++;
+			this.percentualeValoriNulliTabella.put(tempPerc, tempNtab);
 		}
 	}
 
@@ -191,7 +215,8 @@ public class Stats {
 		return "Stats:\nnumeroTabelle=" + numeroTabelle + "\n" + "numeroMedioColonne=" + numeroMedioColonne + "\n"
 				+ "numeroMedioRighe=" + numeroMedioRighe + "\n" + "numeroMedioValoriNulli=" + numeroMedioValoriNulli
 				+ "\n" + "distribuzioneRighe=" + distribuzioneRighe + "\n" + "distribuzioneColonne="
-				+ distribuzioneColonne + "\n" + "distribuzioneValoriDistinti=" + distribuzioneValoriDistinti;
+				+ distribuzioneColonne + "\n" + "distribuzioneValoriDistinti=" + distribuzioneValoriDistinti + "\n"
+				+ "percentualeValoriNulliTabella=" + percentualeValoriNulliTabella;
 	}
 
 }
