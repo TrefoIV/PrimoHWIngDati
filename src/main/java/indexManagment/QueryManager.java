@@ -31,9 +31,10 @@ public class QueryManager {
     public void setQueryColumn(CellCollection column){
         this.mergeListImpl.setColumn(column);
     }
-    public Collection<Integer> executeQuery(){
-        return this.mergeListImpl.executeQuery(this.reader);
+    public Collection<Integer> executeQuery(int top_k){
+        return this.mergeListImpl.executeQuery(this.reader, top_k);
     }
+    public Collection<Integer> executeQueryNoDuplicates(int top_k){return this.mergeListImpl.executeQueryNoDuplicates(this.reader, top_k);}
 
     public Document getDocumentById(Integer id){
         Document result = null;

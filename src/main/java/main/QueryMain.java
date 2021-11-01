@@ -58,24 +58,22 @@ public class QueryMain {
 					System.out.println("\n");
 					queryManager.setQueryColumn(column);
 
-					Collection<Integer> docs = queryManager.executeQuery();
-					
-					int c = 0;
-					for(Integer docID : docs){
-						c++;
-						if(c == 5) {
-							c = 0;
-							break;
-						}
-						doc = queryManager.getDocumentById(docID);
-						IndexableField f = doc.getField(IndexManager.TABLE_ID_FIELD_TYPE);
-						System.out.print(f.stringValue()  + ": ");
+					Collection<Integer> docs;
 
-						for(IndexableField field : doc.getFields(IndexManager.ELEMENT_FIELD_TYPE)){
-							System.out.print(field.stringValue() + "\t");
-						}
-						System.out.println();
-					}
+					long start = System.currentTimeMillis();
+					docs= queryManager.executeQuery(10);
+					long end = System.currentTimeMillis();
+					System.out.println("Time with duplicates: " + (end - start) + "\n");
+
+					QueryMain.printQueryResults(docs, queryManager);
+
+					start = System.currentTimeMillis();
+					docs = queryManager.executeQueryNoDuplicates(10);
+					end = System.currentTimeMillis();
+					System.out.println("Time with no duplicates: " + (end-start) + "\n");
+					QueryMain.printQueryResults(docs, queryManager);
+
+
 				}
 			}
 
@@ -83,5 +81,20 @@ public class QueryMain {
 			e1.printStackTrace();
 		}
 
+	}
+
+	private static void printQueryResults(Collection<Integer> docs, QueryManager queryManager){
+		Document doc;
+		for(Integer docID : docs){
+
+			doc = queryManager.getDocumentById(docID);
+			IndexableField f = doc.getField(IndexManager.TABLE_ID_FIELD_TYPE);
+			System.out.print(f.stringValue()  + ": ");
+
+			for(IndexableField field : doc.getFields(IndexManager.ELEMENT_FIELD_TYPE)){
+				System.out.print(field.stringValue() + "\t");
+			}
+			System.out.println();
+		}
 	}
 }
