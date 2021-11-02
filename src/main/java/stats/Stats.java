@@ -34,10 +34,7 @@ public class Stats {
 	private boolean salvare75;
 
 	public Stats() {
-		this.salvare0 = false;
-		this.salvare25 = false;
-		this.salvare50 = false;
-		this.salvare75 = false;
+		this.salvare0 = this.salvare50 = this.salvare25 = this.salvare75 = false;
 		this.distribuzioneColonne = new TreeMap<Integer, Integer>();
 		this.distribuzioneRighe = new TreeMap<Integer, Integer>();
 		this.distribuzioneValoriDistinti = new TreeMap<Integer, Integer>();
@@ -46,6 +43,8 @@ public class Stats {
 	}
 
 	public void analizza(Table table) {
+
+		this.salvare0 = this.salvare50 = this.salvare25 = this.salvare75 = false;
 
 		this.numeroTabelle++;
 
