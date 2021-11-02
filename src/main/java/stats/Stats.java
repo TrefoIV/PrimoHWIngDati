@@ -212,11 +212,14 @@ public class Stats {
 
 	@Override
 	public String toString() {
-		return "Stats:\nnumeroTabelle=" + numeroTabelle + "\n" + "numeroMedioColonne=" + numeroMedioColonne + "\n"
-				+ "numeroMedioRighe=" + numeroMedioRighe + "\n" + "numeroMedioValoriNulli=" + numeroMedioValoriNulli
-				+ "\n" + "distribuzioneRighe=" + distribuzioneRighe + "\n" + "distribuzioneColonne="
-				+ distribuzioneColonne + "\n" + "distribuzioneValoriDistinti=" + distribuzioneValoriDistinti + "\n"
-				+ "percentualeValoriNulliTabella=" + percentualeValoriNulliTabella;
+		return "Stats [numeroTabelle=" + numeroTabelle + ", numeroTotaleColonne=" + numeroTotaleColonne
+				+ ", numeroMedioColonne=" + numeroMedioColonne + ", numeroTotaleRighe=" + numeroTotaleRighe
+				+ ", numeroMedioRighe=" + numeroMedioRighe + ", numeroTotaleValoriNulli=" + numeroTotaleValoriNulli
+				+ ", numeroMedioValoriNulli=" + numeroMedioValoriNulli + ", distribuzioneRighe=" + distribuzioneRighe
+				+ ", distribuzioneColonne=" + distribuzioneColonne + ", distribuzioneValoriDistinti="
+				+ distribuzioneValoriDistinti + ", percentualeValoriNulliTabella=" + percentualeValoriNulliTabella
+				+ "]";
 	}
 
+	
 }
