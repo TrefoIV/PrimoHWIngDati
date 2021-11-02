@@ -5,6 +5,8 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonSetter;
 
+import java.util.Objects;
+
 @JsonIgnoreProperties({ "_id", "id", "className", "innerHTML", "Rows", "beginIndex", "endIndex", "referenceContext",
 		"classe", "maxDimensions", "headersCleaned", "keyColumn", "type" })
 
@@ -12,7 +14,7 @@ import org.codehaus.jackson.annotate.JsonSetter;
  * Cell represents a cell of a table
  */
 
-public class Cell {
+public class Cell{
 	private Boolean isHeader;
 	private Coordinates coordinates;
 	private String cleanedText;
@@ -57,4 +59,19 @@ public class Cell {
 	public boolean isNULLValue() {
 		return this.isNULLValue;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Cell cell = (Cell) o;
+		return isNULLValue == cell.isNULLValue && Objects.equals(isHeader, cell.isHeader) && Objects.equals(coordinates, cell.coordinates) && Objects.equals(cleanedText, cell.cleanedText);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(isHeader, coordinates, cleanedText, isNULLValue);
+	}
+
+
 }

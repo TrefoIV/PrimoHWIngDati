@@ -43,7 +43,7 @@ public class IndexerMain {
 			FileWriter myWriter = new FileWriter(queryJson);
 
 			// keep reading the file line by line until is null
-			while ((sCurrentLine = br.readLine()) != null && numeroTabTemp < 50000) {
+			while ((sCurrentLine = br.readLine()) != null ) {
 				// System.out.println("Record:\t" + sCurrentLine);
 
 				numeroTabelle++;
@@ -54,6 +54,12 @@ public class IndexerMain {
 				});
 
 				table.setColumns(cells);
+
+				if(table.getMaxDimensions().getRow() > 6000){
+					myWriter.append(sCurrentLine);
+					myWriter.append("\n");
+				}
+
 				if (numeroTabelle == 50000) {
 					
 					System.out.println("Sono ancora vivo\n");
