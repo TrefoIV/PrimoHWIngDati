@@ -6,6 +6,7 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import stats.QueryStats;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -45,5 +46,9 @@ public class QueryManager {
         }
 
         return  result;
+    }
+
+    public QueryStats getStats() {
+        return this.mergeListImpl.getQueryStats();
     }
 }
