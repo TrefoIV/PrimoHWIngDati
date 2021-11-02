@@ -12,6 +12,7 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import stats.QueryStats;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -21,6 +22,7 @@ import java.util.*;
 public class MergeListImpl {
 
     private List<Cell> column;
+    private QueryStats queryStats;
 
     public void setColumn(CellCollection column){
         this.column = column.getCells();
@@ -30,17 +32,20 @@ public class MergeListImpl {
 
         if(column == null || column.isEmpty())
             return new ArrayList<>();
-
-
+        long tot_lucene_query_time = 0;
+        long query_start = System.currentTimeMillis();
         IndexSearcher searcher = new IndexSearcher(reader);
         Term term;
         TopDocs docs;
         HashMap<Integer, Integer> doc2count = new HashMap<>();
-
+        long n_elements = this.column.size();
         for (Cell c : this.column){
             term = new Term(IndexManager.ELEMENT_FIELD_TYPE, c.getCleanedText());
             try{
+                long start = System.currentTimeMillis();
                 docs = searcher.search(new TermQuery(term), Integer.MAX_VALUE);
+                long end = System.currentTimeMillis();
+                tot_lucene_query_time += end - start;
             }catch (IOException e) {
                 e.printStackTrace();
                 return new ArrayList<>();
@@ -53,6 +58,8 @@ public class MergeListImpl {
 
         TreeSet<Integer> orderedResult = new TreeSet<>(new DocsComparator(doc2count));
         orderedResult.addAll(doc2count.keySet());
+        long query_end = System.currentTimeMillis();
+        this.queryStats = new QueryStats(tot_lucene_query_time, ((double) tot_lucene_query_time/n_elements), query_end-query_start);
         return this.extractTop(orderedResult, k_top);
 
     }
@@ -62,7 +69,8 @@ public class MergeListImpl {
 
         if(column == null || column.isEmpty())
             return new ArrayList<>();
-
+        long tot_lucene_query_time = 0;
+        long query_start = System.currentTimeMillis();
         IndexSearcher searcher = new IndexSearcher(reader);
 
         HashMap<String, Integer> termCounts = new HashMap<>();
@@ -71,7 +79,7 @@ public class MergeListImpl {
             termCounts.put(c.getCleanedText(), v+1);
         }
         HashSet<Cell> cellSet = new HashSet<>(this.column);
-
+        long n_elements = cellSet.size();
         Term term;
         TopDocs docs;
         HashMap<Integer, Integer> doc2count = new HashMap<>();
@@ -79,7 +87,10 @@ public class MergeListImpl {
         for (Cell c : cellSet){
             term = new Term(IndexManager.ELEMENT_FIELD_TYPE, c.getCleanedText());
             try{
+                long start = System.currentTimeMillis();
                 docs = searcher.search(new TermQuery(term), Integer.MAX_VALUE);
+                long end = System.currentTimeMillis();
+                tot_lucene_query_time += end - start;
             }catch (IOException e) {
                 e.printStackTrace();
                 return new ArrayList<>();
@@ -95,6 +106,8 @@ public class MergeListImpl {
 
         TreeSet<Integer> orderedResult = new TreeSet<>(new DocsComparator(doc2count));
         orderedResult.addAll(doc2count.keySet());
+        long query_end = System.currentTimeMillis();
+        this.queryStats = new QueryStats(tot_lucene_query_time, ((double) tot_lucene_query_time/n_elements), query_end-query_start);
         return this.extractTop(orderedResult, k_top);
     }
 
@@ -116,6 +129,10 @@ public class MergeListImpl {
         }
 
         return top_docs;
+    }
+
+    public QueryStats getQueryStats() {
+        return queryStats;
     }
 
     private class DocsComparator implements Comparator<Integer> {

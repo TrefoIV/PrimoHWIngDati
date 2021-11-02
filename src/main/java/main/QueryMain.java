@@ -9,7 +9,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexableField;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.json.simple.parser.JSONParser;
 
 import jsonParser.CellCollection;
 import jsonParser.Table;
@@ -28,7 +27,6 @@ public class QueryMain {
 		QueryManager queryManager = new QueryManager();
 
 		try {
-			Document doc;
 			String sCurrentLine;
 			int numeroTabTemp = 0;
 
@@ -51,28 +49,28 @@ public class QueryMain {
 				CellCollection column = table.getColumns().get(0);
 
 
-					System.out.println("############################################### Executing Query for Column : ###############################################");
-					System.out.print(table.getId() + ": ");
-					for(Cell c : column.getCells()){
-						System.out.print(c.getCleanedText() + "\t");
-					}
-					System.out.println("\n");
-					queryManager.setQueryColumn(column);
+				System.out.println("############################################### Executing Query for Column : ###############################################");
+				System.out.print(table.getId() + ": ");
+				for(Cell c : column.getCells()){
+					System.out.print(c.getCleanedText() + "\t");
+				}
+				System.out.println("\n");
 
-					Collection<Integer> docs;
+				queryManager.setQueryColumn(column);
 
-					long start = System.currentTimeMillis();
-					docs= queryManager.executeQuery(10);
-					long end = System.currentTimeMillis();
-					System.out.println("Time with duplicates: " + (end - start) + "\n");
+				Collection<Integer> docs;
 
-					QueryMain.printQueryResults(docs, queryManager);
 
-					start = System.currentTimeMillis();
-					docs = queryManager.executeQueryNoDuplicates(10);
-					end = System.currentTimeMillis();
-					System.out.println("Time with no duplicates: " + (end-start) + "\n");
-					QueryMain.printQueryResults(docs, queryManager);
+				docs= queryManager.executeQuery(10);
+
+				System.out.println(queryManager.getStats());
+
+				QueryMain.printQueryResults(docs, queryManager);
+
+
+				docs = queryManager.executeQueryNoDuplicates(10);
+				System.out.println();
+				QueryMain.printQueryResults(docs, queryManager);
 
 
 
