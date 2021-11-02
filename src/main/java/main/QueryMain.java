@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashSet;
 
 public class QueryMain {
 
@@ -47,14 +48,19 @@ public class QueryMain {
 				table.setColumns(cells);
 
 				CellCollection column = table.getColumns().get(0);
+				//Skip GARGANTUA
+				if (column.getCells().size() > 6000)
+						continue;
 
+				double percValoriDist = ( ((double) new HashSet<Cell>(column.getCells()).size() )/( (double) column.getCells().size()) )*100;
 
 				System.out.println("############################################### Executing Query for Column : ###############################################");
 				System.out.print(table.getId() + ": ");
 				for(Cell c : column.getCells()){
 					System.out.print(c.getCleanedText() + "\t");
 				}
-				System.out.println("\n");
+				System.out.println("\n % valori totali: " + column.getCells().size());
+				System.out.println("\n % valori distinti: " + percValoriDist + "\n");
 
 				queryManager.setQueryColumn(column);
 
@@ -69,7 +75,7 @@ public class QueryMain {
 
 
 				docs = queryManager.executeQueryNoDuplicates(10);
-				System.out.println();
+				System.out.println(queryManager.getStats());
 				QueryMain.printQueryResults(docs, queryManager);
 
 
