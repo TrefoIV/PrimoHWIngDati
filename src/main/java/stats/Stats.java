@@ -46,27 +46,6 @@ public class Stats {
 	}
 
 	public void analizza(Table table) {
-		/*
-		 * this.numeroTabelle++;
-		 * 
-		 * this.numeroTotaleColonne += table.getMaxDimensions().getColumn();
-		 * this.numeroTotaleRighe += table.getMaxDimensions().getRow();
-		 * this.valoriNulliPerTabella(table.getColumns());
-		 * 
-		 * int numeroColonneTabellaCorrente = table.getMaxDimensions().getColumn(); if
-		 * (this.distribuzioneColonne.containsKey(numeroColonneTabellaCorrente)) { int
-		 * tempColonne = this.distribuzioneColonne.get(numeroColonneTabellaCorrente);
-		 * tempColonne++; this.distribuzioneColonne.put(numeroColonneTabellaCorrente,
-		 * tempColonne); } else
-		 * this.distribuzioneColonne.put(numeroColonneTabellaCorrente, 1);
-		 * 
-		 * int numeroRigheTabellaCorrente = table.getMaxDimensions().getRow(); if
-		 * (this.distribuzioneRighe.containsKey(numeroRigheTabellaCorrente)) { int
-		 * tempRighe = this.distribuzioneRighe.get(numeroRigheTabellaCorrente);
-		 * tempRighe++; this.distribuzioneRighe.put(numeroRigheTabellaCorrente,
-		 * tempRighe); } else this.distribuzioneRighe.put(numeroRigheTabellaCorrente,
-		 * 1); this.distribuzioneValori(table.getColumns());
-		 */
 
 		this.numeroTabelle++;
 
@@ -139,23 +118,25 @@ public class Stats {
 			}
 		}
 		double dimensioneColonna = (double) columns.get(0).getCells().size();
-		int count = 0;
+
+		int percDistinti = (int) ( ( ((double)valoriDistintiPerColonna.get(0).size()) / dimensioneColonna) * 100 );
+
+		if (percDistinti == 0)
+			salvare0 = true;
+		else if (percDistinti == 25)
+			salvare25 = true;
+		else if (percDistinti == 50)
+			salvare50 = true;
+		else if (percDistinti == 75)
+			salvare75 = true;
+
+
 		for (Set<String> i : valoriDistintiPerColonna.values()) {
 			double nValoriDistinti = (double) i.size();
-			int percDistinti = (int) ((nValoriDistinti / dimensioneColonna) * 100);
+			percDistinti = (int) ((nValoriDistinti / dimensioneColonna) * 100);
 			int v = this.percentualeValoriDistintiColonna.getOrDefault(percDistinti, 0);
 			this.percentualeValoriDistintiColonna.put(percDistinti, v + 1);
-			if (count == 0) {
-				if (percDistinti == 0)
-					salvare0 = true;
-				if (percDistinti == 25)
-					salvare25 = true;
-				if (percDistinti == 50)
-					salvare50 = true;
-				if (percDistinti == 75)
-					salvare75 = true;
-			}
-			count++;
+
 		}
 		// itero per la mappa e conto quante colonne hanno lo stesso numero di valori
 		// distinti

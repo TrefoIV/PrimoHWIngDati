@@ -59,26 +59,26 @@ public class IndexerMain {
 
 				table.setColumns(cells);
 				statistiche.analizza(table);
-				if ((table.getMaxDimensions().getRow() > 2000) && statistiche.isSalvare0() && salvare0) {
-					System.out.println("Hi 0"+ numeroTabTemp);
+				if ((table.getMaxDimensions().getRow() > 2000) && (table.getMaxDimensions().getRow() < 3000) && statistiche.isSalvare0() && salvare0) {
+					System.out.println("Hi 0  "+ numeroTabTemp);
 					myWriter.append(sCurrentLine);
 					myWriter.append("\n");
 					salvare0 = false;
 				}
-				if ((table.getMaxDimensions().getRow() > 2000) && statistiche.isSalvare25() && salvare25) {
-					System.out.println("Hi 25"+ numeroTabTemp);
+				else if ((table.getMaxDimensions().getRow() > 2000) && (table.getMaxDimensions().getRow() < 3000) && statistiche.isSalvare25() && salvare25) {
+					System.out.println("Hi 25 "+ numeroTabTemp);
 					myWriter.append(sCurrentLine);
 					myWriter.append("\n");
 					salvare25 = false;
 				}
-				if ((table.getMaxDimensions().getRow() > 2000) && statistiche.isSalvare50() && salvare50) {
-					System.out.println("Hi 50"+ numeroTabTemp);
+				else if ((table.getMaxDimensions().getRow() > 2000) && (table.getMaxDimensions().getRow() < 3000) && statistiche.isSalvare50() && salvare50) {
+					System.out.println("Hi 50 "+ numeroTabTemp);
 					myWriter.append(sCurrentLine);
 					myWriter.append("\n");
 					salvare50 = false;
 				}
-				if ((table.getMaxDimensions().getRow() > 2000) && statistiche.isSalvare75() && salvare75) {
-					System.out.println("Hi 75"+ numeroTabTemp);
+				else if ((table.getMaxDimensions().getRow() > 2000) && (table.getMaxDimensions().getRow() < 3000) && statistiche.isSalvare75() && salvare75) {
+					System.out.println("Hi 75 "+ numeroTabTemp);
 					myWriter.append(sCurrentLine);
 					myWriter.append("\n");
 					salvare75 = false;
