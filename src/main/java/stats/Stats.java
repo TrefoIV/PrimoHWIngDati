@@ -28,8 +28,16 @@ public class Stats {
 	// (azzerata ad ogni iterazione)
 	private int valoriNulliPerTabella;
 	private int maxNumeroRigheTabellaCorrente;
+	private boolean salvare0;
+	private boolean salvare25;
+	private boolean salvare50;
+	private boolean salvare75;
 
 	public Stats() {
+		this.salvare0 = false;
+		this.salvare25 = false;
+		this.salvare50 = false;
+		this.salvare75 = false;
 		this.distribuzioneColonne = new TreeMap<Integer, Integer>();
 		this.distribuzioneRighe = new TreeMap<Integer, Integer>();
 		this.distribuzioneValoriDistinti = new TreeMap<Integer, Integer>();
@@ -131,12 +139,23 @@ public class Stats {
 			}
 		}
 		double dimensioneColonna = (double) columns.get(0).getCells().size();
+		int count = 0;
 		for (Set<String> i : valoriDistintiPerColonna.values()) {
 			double nValoriDistinti = (double) i.size();
 			int percDistinti = (int) ((nValoriDistinti / dimensioneColonna) * 100);
 			int v = this.percentualeValoriDistintiColonna.getOrDefault(percDistinti, 0);
 			this.percentualeValoriDistintiColonna.put(percDistinti, v + 1);
-
+			if (count == 0) {
+				if (percDistinti == 0)
+					salvare0 = true;
+				if (percDistinti == 25)
+					salvare25 = true;
+				if (percDistinti == 50)
+					salvare50 = true;
+				if (percDistinti == 75)
+					salvare75 = true;
+			}
+			count++;
 		}
 		// itero per la mappa e conto quante colonne hanno lo stesso numero di valori
 		// distinti
@@ -218,6 +237,94 @@ public class Stats {
 
 	public void setDistribuzioneValoriDistinti(TreeMap<Integer, Integer> distribuzioneValoriDistinti) {
 		this.distribuzioneValoriDistinti = distribuzioneValoriDistinti;
+	}
+
+	public int getNumeroTotaleColonne() {
+		return numeroTotaleColonne;
+	}
+
+	public void setNumeroTotaleColonne(int numeroTotaleColonne) {
+		this.numeroTotaleColonne = numeroTotaleColonne;
+	}
+
+	public int getNumeroTotaleRighe() {
+		return numeroTotaleRighe;
+	}
+
+	public void setNumeroTotaleRighe(int numeroTotaleRighe) {
+		this.numeroTotaleRighe = numeroTotaleRighe;
+	}
+
+	public int getNumeroTotaleValoriNulli() {
+		return numeroTotaleValoriNulli;
+	}
+
+	public void setNumeroTotaleValoriNulli(int numeroTotaleValoriNulli) {
+		this.numeroTotaleValoriNulli = numeroTotaleValoriNulli;
+	}
+
+	public TreeMap<Integer, Integer> getPercentualeValoriNulliTabella() {
+		return percentualeValoriNulliTabella;
+	}
+
+	public void setPercentualeValoriNulliTabella(TreeMap<Integer, Integer> percentualeValoriNulliTabella) {
+		this.percentualeValoriNulliTabella = percentualeValoriNulliTabella;
+	}
+
+	public TreeMap<Integer, Integer> getPercentualeValoriDistintiColonna() {
+		return percentualeValoriDistintiColonna;
+	}
+
+	public void setPercentualeValoriDistintiColonna(TreeMap<Integer, Integer> percentualeValoriDistintiColonna) {
+		this.percentualeValoriDistintiColonna = percentualeValoriDistintiColonna;
+	}
+
+	public int getValoriNulliPerTabella() {
+		return valoriNulliPerTabella;
+	}
+
+	public void setValoriNulliPerTabella(int valoriNulliPerTabella) {
+		this.valoriNulliPerTabella = valoriNulliPerTabella;
+	}
+
+	public int getMaxNumeroRigheTabellaCorrente() {
+		return maxNumeroRigheTabellaCorrente;
+	}
+
+	public void setMaxNumeroRigheTabellaCorrente(int maxNumeroRigheTabellaCorrente) {
+		this.maxNumeroRigheTabellaCorrente = maxNumeroRigheTabellaCorrente;
+	}
+
+	public boolean isSalvare0() {
+		return salvare0;
+	}
+
+	public void setSalvare0(boolean salvare0) {
+		this.salvare0 = salvare0;
+	}
+
+	public boolean isSalvare25() {
+		return salvare25;
+	}
+
+	public void setSalvare25(boolean salvare25) {
+		this.salvare25 = salvare25;
+	}
+
+	public boolean isSalvare50() {
+		return salvare50;
+	}
+
+	public void setSalvare50(boolean salvare50) {
+		this.salvare50 = salvare50;
+	}
+
+	public boolean isSalvare75() {
+		return salvare75;
+	}
+
+	public void setSalvare75(boolean salvare75) {
+		this.salvare75 = salvare75;
 	}
 
 	@Override

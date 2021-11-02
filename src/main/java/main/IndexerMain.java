@@ -17,16 +17,20 @@ import org.json.simple.parser.JSONParser;
 
 //Queta è una classe inutile di prova
 public class IndexerMain {
+
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws Exception {
-
+		boolean salvare0 = true;
+		boolean salvare25 = true;
+		boolean salvare50 = true;
+		boolean salvare75 = true;
 		BufferedReader br = null;
 		JSONParser parser = new JSONParser();
 		IndexManager indexManager = new IndexManager();
 		Stats statistiche = new Stats();
 		Table table;
 		File queryJson = new File("queryJson.json");
-
+		long start = System.currentTimeMillis();
 		try {
 
 			// current line of the json file
@@ -43,7 +47,7 @@ public class IndexerMain {
 			FileWriter myWriter = new FileWriter(queryJson);
 
 			// keep reading the file line by line until is null
-			while ((sCurrentLine = br.readLine()) != null ) {
+			while ((sCurrentLine = br.readLine()) != null) {
 				// System.out.println("Record:\t" + sCurrentLine);
 
 				numeroTabelle++;
@@ -54,36 +58,55 @@ public class IndexerMain {
 				});
 
 				table.setColumns(cells);
-
-				if(table.getMaxDimensions().getRow() > 6000){
+				statistiche.analizza(table);
+				if ((table.getMaxDimensions().getRow() > 2000) && statistiche.isSalvare0() && salvare0) {
+					System.out.println("Hi 0"+ numeroTabTemp);
 					myWriter.append(sCurrentLine);
 					myWriter.append("\n");
+					salvare0 = false;
 				}
-
-				if (numeroTabelle == 50000) {
-					
-					System.out.println("Sono ancora vivo\n");
-
-					numeroTabelle = 0;
-
+				if ((table.getMaxDimensions().getRow() > 2000) && statistiche.isSalvare25() && salvare25) {
+					System.out.println("Hi 25"+ numeroTabTemp);
 					myWriter.append(sCurrentLine);
 					myWriter.append("\n");
-
-				}else {
-					indexManager.addTable(table);
+					salvare25 = false;
 				}
-					statistiche.analizza(table);
-
+				if ((table.getMaxDimensions().getRow() > 2000) && statistiche.isSalvare50() && salvare50) {
+					System.out.println("Hi 50"+ numeroTabTemp);
+					myWriter.append(sCurrentLine);
+					myWriter.append("\n");
+					salvare50 = false;
+				}
+				if ((table.getMaxDimensions().getRow() > 2000) && statistiche.isSalvare75() && salvare75) {
+					System.out.println("Hi 75"+ numeroTabTemp);
+					myWriter.append(sCurrentLine);
+					myWriter.append("\n");
+					salvare75 = false;
+				}
+				/*
+				 * if (numeroTabelle == 50000) {
+				 * 
+				 * System.out.println("Sono ancora vivo\n");
+				 * 
+				 * numeroTabelle = 0;
+				 * 
+				 * myWriter.append(sCurrentLine); myWriter.append("\n");
+				 * 
+				 * } else {
+				 * 
+				 * indexManager.addTable(table); }
+				 */
 
 			}
 			statistiche.calcoloNumeriMedi();
-			indexManager.closeManager();
+			//indexManager.closeManager();
 
 			myWriter.close();
-			
+			long end = System.currentTimeMillis();
+			System.out.println(end - start);
 			System.out.println(statistiche.toString());
 			System.out.println("Finito!\n");
-			
+
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} finally {
