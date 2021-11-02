@@ -111,6 +111,7 @@ public class MergeListImpl {
         Collection<Integer> top_docs = new ArrayList<>();
         int i = 0;
         while(!set.isEmpty() && i < k_top) {
+            i++;
             top_docs.add(set.pollFirst());
         }
 

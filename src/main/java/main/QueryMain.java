@@ -48,7 +48,8 @@ public class QueryMain {
 				CellCollection cells = objectMapper.readValue(sCurrentLine, new TypeReference<CellCollection>() {});
 				table.setColumns(cells);
 
-				for(CellCollection column : table.getColumns().values()){
+				CellCollection column = table.getColumns().get(0);
+
 
 					System.out.println("############################################### Executing Query for Column : ###############################################");
 					System.out.print(table.getId() + ": ");
@@ -74,7 +75,7 @@ public class QueryMain {
 					QueryMain.printQueryResults(docs, queryManager);
 
 
-				}
+
 			}
 
 		} catch (IOException e1) {

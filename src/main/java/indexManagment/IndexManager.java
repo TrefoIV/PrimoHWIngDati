@@ -40,9 +40,7 @@ public class IndexManager {
     public void addTable(Table table){
         if(table == null) return;
         this.addedTableCount++;
-        HashMap<Integer, Document> col2docs = new HashMap<>();
         Document doc;
-        int col;
 
         for(CellCollection column : table.getColumns().values()){
             doc = new Document();
