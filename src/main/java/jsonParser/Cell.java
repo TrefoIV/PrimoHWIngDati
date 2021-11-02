@@ -65,12 +65,12 @@ public class Cell{
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Cell cell = (Cell) o;
-		return isNULLValue == cell.isNULLValue && Objects.equals(isHeader, cell.isHeader) && Objects.equals(coordinates, cell.coordinates) && Objects.equals(cleanedText, cell.cleanedText);
+		return cleanedText.equals(cell.cleanedText);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(isHeader, coordinates, cleanedText, isNULLValue);
+		return cleanedText.hashCode();
 	}
 
 
