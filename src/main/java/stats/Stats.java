@@ -23,6 +23,7 @@ public class Stats {
 	private TreeMap<Integer, Integer> distribuzioneColonne;
 	private TreeMap<Integer, Integer> distribuzioneValoriDistinti;
 	private TreeMap<Integer, Integer> percentualeValoriNulliTabella;
+	private TreeMap<Integer, Integer> percentualeValoriDistintiColonna;
 	// tiene conto del numero di valori nulli ogni volta che si vede una tabella
 	// (azzerata ad ogni iterazione)
 	private int valoriNulliPerTabella;
@@ -33,6 +34,7 @@ public class Stats {
 		this.distribuzioneRighe = new TreeMap<Integer, Integer>();
 		this.distribuzioneValoriDistinti = new TreeMap<Integer, Integer>();
 		this.percentualeValoriNulliTabella = new TreeMap<Integer, Integer>();
+		this.percentualeValoriDistintiColonna = new TreeMap<Integer, Integer>();
 	}
 
 	public void analizza(Table table) {
@@ -128,6 +130,14 @@ public class Stats {
 				}
 			}
 		}
+		double dimensioneColonna = (double) columns.get(0).getCells().size();
+		for (Set<String> i : valoriDistintiPerColonna.values()) {
+			double nValoriDistinti = (double) i.size();
+			int percDistinti = (int) ((nValoriDistinti / dimensioneColonna) * 100);
+			int v = this.percentualeValoriDistintiColonna.getOrDefault(percDistinti, 0);
+			this.percentualeValoriDistintiColonna.put(percDistinti, v + 1);
+
+		}
 		// itero per la mappa e conto quante colonne hanno lo stesso numero di valori
 		// distinti
 		for (Set<String> set : valoriDistintiPerColonna.values()) {
@@ -143,8 +153,8 @@ public class Stats {
 	public void percentualeValoriNulliTabella(Table table) {
 		double valNull = (double) this.valoriNulliPerTabella;
 		double cellTot = (double) (table.getColumns().size() * this.maxNumeroRigheTabellaCorrente);
-		int tempPerc = (int) ((valNull / cellTot)* 100);
-		//System.out.println(tempPerc);
+		int tempPerc = (int) ((valNull / cellTot) * 100);
+		// System.out.println(tempPerc);
 		if (this.percentualeValoriNulliTabella.get(tempPerc) == null) {
 			this.percentualeValoriNulliTabella.put(tempPerc, 1);
 		} else {
@@ -212,14 +222,18 @@ public class Stats {
 
 	@Override
 	public String toString() {
-		return "Stats [numeroTabelle=" + numeroTabelle + ", numeroTotaleColonne=" + numeroTotaleColonne
-				+ ", numeroMedioColonne=" + numeroMedioColonne + ", numeroTotaleRighe=" + numeroTotaleRighe
-				+ ", numeroMedioRighe=" + numeroMedioRighe + ", numeroTotaleValoriNulli=" + numeroTotaleValoriNulli
-				+ ", numeroMedioValoriNulli=" + numeroMedioValoriNulli + ", distribuzioneRighe=" + distribuzioneRighe
-				+ ", distribuzioneColonne=" + distribuzioneColonne + ", distribuzioneValoriDistinti="
-				+ distribuzioneValoriDistinti + ", percentualeValoriNulliTabella=" + percentualeValoriNulliTabella
-				+ "]";
+		/*
+		 * return "Stats [numeroTabelle=" + numeroTabelle + ", numeroTotaleColonne=" +
+		 * numeroTotaleColonne + ", numeroMedioColonne=" + numeroMedioColonne +
+		 * ", numeroTotaleRighe=" + numeroTotaleRighe + ", numeroMedioRighe=" +
+		 * numeroMedioRighe + ", numeroTotaleValoriNulli=" + numeroTotaleValoriNulli +
+		 * ", numeroMedioValoriNulli=" + numeroMedioValoriNulli +
+		 * ", distribuzioneRighe=" + distribuzioneRighe + ", distribuzioneColonne=" +
+		 * distribuzioneColonne + ", distribuzioneValoriDistinti=" +
+		 * distribuzioneValoriDistinti + ", percentualeValoriNulliTabella=" +
+		 * percentualeValoriNulliTabella + "]";
+		 */
+		return "percentualeValoriDistinti\n" + this.percentualeValoriDistintiColonna;
 	}
 
-	
 }
