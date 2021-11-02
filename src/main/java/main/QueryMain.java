@@ -59,6 +59,8 @@ public class QueryMain {
 				for(Cell c : column.getCells()){
 					System.out.print(c.getCleanedText() + "\t");
 				}
+				System.out.println("\n" + new HashSet<Cell>(column.getCells()).size());
+				System.out.println(column.getCells().size());
 				System.out.println("\n % valori totali: " + column.getCells().size());
 				System.out.println("\n % valori distinti: " + percValoriDist + "\n");
 
